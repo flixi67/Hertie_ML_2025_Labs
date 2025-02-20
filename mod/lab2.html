@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.554">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lab 2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="lab2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lab2_files/libs/quarto-html/quarto.js"></script>
+<script src="lab2_files/libs/quarto-html/popper.min.js"></script>
+<script src="lab2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="lab2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="lab2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lab2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="lab2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="lab2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="lab2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="machine-learning" class="level2">
+<h2 class="anchored" data-anchor-id="machine-learning">Machine Learning</h2>
+</section>
+<section id="today" class="level2">
+<h2 class="anchored" data-anchor-id="today">Today</h2>
+<ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#dataframes">Dataframes</a></li>
+<li><a href="#dataset">Student Performance Dataset</a></li>
+<li><a href="#ols">Ordinary Least Squares Regression with the Closed Form Solution</a></li>
+</ul>
+</section>
+<section id="setup-the-environment" class="level2">
+<h2 class="anchored" data-anchor-id="setup-the-environment">Setup the environment <a class="anchor" id="setup" href=""></a></h2>
+<ol type="1">
+<li>Open Your Terminal or Command Prompt</li>
+<li>Activate Your Conda Environment - make sure it is active before running the installation commands below! <code>conda activate ml2025</code></li>
+<li>Install Matplotlib <code>conda install matplotlib</code></li>
+<li>Install statsmodel <code>conda install statsmodels</code></li>
+<li>Install pandas <code>conda install pandas</code></li>
+<li>Install sklearn <code>conda install scikit-learn</code></li>
+</ol>
+<p>(or <code>pip install packagename</code> if you don’t use conda or conda install doesn’t work for some reason)</p>
+<p>A quick introduction to the packages we will use:<br>
+- <strong>NumPy (<code>np</code>)</strong>: NumPy (Numerical Python) provides support for large, multi-dimensional arrays and matrices, along with mathematical functions to operate on these arrays. It is highly optimized for numerical computations and serves as the foundation for many other scientific computing libraries, including Pandas. NumPy’s <code>ndarray</code> is the fundamental data structure, offering efficient operations like element-wise calculations, linear algebra, and statistical functions.</p>
+<ul>
+<li><p><strong>Pandas (<code>pd</code>)</strong>: Pandas is built on the NumPy package and its key data structure is called the <strong>DataFrame</strong>. DataFrames allow you to store and manipulate tabular data in rows of observations and columns of variables. Pandas provides functions for data cleaning, transformation, and analysis, making it the primary package for handling structured datasets. Unless you are working with large datasets where efficiency is key, this is the main package for loading and managing data.</p></li>
+<li><p><strong>Matplotlib (<code>plt</code>)</strong>: Matplotlib is a powerful library for creating static, animated, and interactive visualizations in Python. It provides fine-grained control over plots, allowing users to create line charts, histograms, scatter plots, and more. The <code>pyplot</code> module (<code>plt</code>) is a commonly used interface that simplifies the process of creating and customizing plots. (Seaborn (<code>sns</code>) is a useful library built on top of Matplotlib for even nicer and more complex graphs.)</p></li>
+<li><p><strong>Statsmodels (<code>sm</code>)</strong>: Statsmodels is a library for estimating and testing statistical models. It provides tools for performing regression analysis, hypothesis testing, and statistical data exploration. Compared to Scikit-learn, which is optimized for predictive modeling, Statsmodels focuses more on statistical inference, offering detailed output on model parameters, significance tests, and confidence intervals.</p></li>
+<li><p><strong>Scikit-learn (<code>sklearn</code>)</strong>: Scikit-learn is one of the most widely used libraries for machine learning in Python. It provides efficient implementations of various machine learning algorithms, including regression, classification, clustering, and dimensionality reduction. In addition to modeling, scikit-learn includes utilities for data preprocessing, model selection, and evaluation, making it a comprehensive tool for building and testing predictive models. As sklearn is a huge package, we usually only import individual modules as we need them.</p></li>
+</ul>
+<p>By combining these libraries, we can efficiently analyze data, visualize trends, and build statistical models.</p>
+<section id="importing-packages" class="level3">
+<h3 class="anchored" data-anchor-id="importing-packages">Importing packages</h3>
+<p>At the start of each notebook we must import the necessary libraries for the code to run.</p>
+<p>You will notice that each of these packages are being installed as a shortened version of their name. This helps keep code short. In practice for common packages this is standardised, and almost everyone will used the same ones which I have included below so it’s good to keep them as they are.</p>
+<div id="ff86b9fd-5683-4d6c-ae45-aaa00fb52e48" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As we have just installed these packages, it’s a good practice to verify they has been successfully installed.</p>
+<div id="cell-10" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.__version__)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.__version__)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(plt.matplotlib.__version__)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sm.__version__)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2.0.1
+2.2.3
+3.10.0
+0.14.4</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="dataframes-with-pandas" class="level2">
+<h2 class="anchored" data-anchor-id="dataframes-with-pandas">Dataframes with pandas <a class="anchor" id="dataframes" href=""></a></h2>
+<p>Use the pandas cheat sheet to help you with the following excercises: https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf</p>
+<p>Let’s create a DataFrame from a dictionary. Here, each key becomes a column in the DataFrame, and the values are the data entries for those columns. A dictionary is a built-in data type that stores collections of data as key-value pairs.</p>
+<div id="829b3faf-9364-4e4d-8640-c209800b1b4d" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_example <span class="op">=</span> {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Name'</span>: [<span class="st">'Alice'</span>, <span class="st">'Bob'</span>, <span class="st">'Charlie'</span>, <span class="st">'David'</span>, <span class="st">'Eve'</span>],</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Age'</span>: [<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">40</span>, <span class="dv">45</span>],</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'City'</span>: [<span class="st">'New York'</span>, <span class="st">'Los Angeles'</span>, <span class="st">'Chicago'</span>, <span class="st">'Houston'</span>, <span class="st">'Phoenix'</span>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">dir</span>(data_example)) <span class="co"># print availbale methods and attributes</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(data_example))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(data_example)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(df))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">str</span>(df)) <span class="co"># this is actually displayed as tabular data, not the list structure as in R</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>df <span class="co"># prints an even nicer table</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#We can also do this directly in the DataFrame constructor but it's a bit more cumbersome:</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">#df = pd.DataFrame(data_example, columns=['Name', 'Age', 'City'], index=['a', 'b', 'c', 'd', 'e'], City=['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['__class__', '__class_getitem__', '__contains__', '__delattr__', '__delitem__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__ior__', '__iter__', '__le__', '__len__', '__lt__', '__ne__', '__new__', '__or__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__ror__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', 'clear', 'copy', 'fromkeys', 'get', 'items', 'keys', 'pop', 'popitem', 'setdefault', 'update', 'values']
+&lt;class 'dict'&gt;
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+      Name  Age         City
+0    Alice   25     New York
+1      Bob   30  Los Angeles
+2  Charlie   35      Chicago
+3    David   40      Houston
+4      Eve   45      Phoenix</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Name</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">City</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Alice</td>
+<td>25</td>
+<td>New York</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Bob</td>
+<td>30</td>
+<td>Los Angeles</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Charlie</td>
+<td>35</td>
+<td>Chicago</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>David</td>
+<td>40</td>
+<td>Houston</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Eve</td>
+<td>45</td>
+<td>Phoenix</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>Display the data frame to make sure it worked:</p>
+<div id="7ef28a25-b5ee-4808-88b1-31ce6419b32c" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Name</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">City</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Alice</td>
+<td>25</td>
+<td>New York</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Bob</td>
+<td>30</td>
+<td>Los Angeles</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Charlie</td>
+<td>35</td>
+<td>Chicago</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>David</td>
+<td>40</td>
+<td>Houston</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Eve</td>
+<td>45</td>
+<td>Phoenix</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>Select only the ‘Name’ and ‘Age’ Columns and display them:</p>
+<div id="a0ed7c60-561c-4a86-92f0-97f1edbfefb4" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"Name"</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df.Age</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(df[<span class="st">"Age"</span>])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">'Name'</span>, <span class="st">'Age'</span>]]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(df[[<span class="st">'Name'</span>, <span class="st">'Age'</span>]]) <span class="co"># this is still a pandas df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>pandas.core.frame.DataFrame</code></pre>
+</div>
+</div>
+<p>Use .describe() to compute basic statistics for the numerical columns:</p>
+<div id="9bf74f50-4a92-452a-b595-65570ef31aa7" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>Age_quant <span class="op">=</span> df.describe() <span class="co"># in a nice and handy df, no weird print() output</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(Age_quant)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>pandas.core.frame.DataFrame</code></pre>
+</div>
+</div>
+<p>Subset the DataFrame for people older than 30 and display it:</p>
+<div id="be273ccf-5b4e-4320-93fe-324425438e98" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[df[<span class="st">'Age'</span>] <span class="op">&gt;</span> <span class="dv">30</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'Age'</span>].unique() <span class="co"># just for remembering</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Name  Age     City
+2  Charlie   35  Chicago
+3    David   40  Houston
+4      Eve   45  Phoenix</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>array([25, 30, 35, 40, 45])</code></pre>
+</div>
+</div>
+<p>How to select by string match or more specific regex:</p>
+<div id="cell-24" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">'City'</span>].isin([<span class="st">'New York'</span>, <span class="st">'Los Angeles'</span>])]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"Name"</span>].<span class="bu">str</span>.contains(<span class="st">"e"</span>)] <span class="co"># filter names containing small e</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">"Name"</span>].<span class="bu">str</span>.contains(<span class="st">"v|E"</span>)] <span class="co"># filter names containing small v or large E</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Name</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">City</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>David</td>
+<td>40</td>
+<td>Houston</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Eve</td>
+<td>45</td>
+<td>Phoenix</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>Add a new column called ‘YearOfBirth’ for the year of birth of the people in the dataset (assuming they have already had their birthdays):</p>
+<div id="cell-26" class="cell" data-execution_count="63">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">## WRONG WRONG WRONG: Explanation below</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df.YearOfBirth <span class="op">=</span> <span class="dv">2025</span> <span class="op">-</span> df.Age</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><span style="color:red;">You can use attribute access to modify an existing element of a Series or column of a DataFrame, but be careful; if you try to use attribute access to create a new column, it creates a new attribute rather than a new column and this will raise a UserWarning:</span></p>
+<div id="cell-28" class="cell" data-execution_count="62">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"YearOfBirth"</span>] <span class="op">=</span> <span class="dv">2025</span> <span class="op">-</span> df[<span class="st">"Age"</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Name</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">City</th>
+<th data-quarto-table-cell-role="th">YearOfBirth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Alice</td>
+<td>25</td>
+<td>New York</td>
+<td>2000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>Bob</td>
+<td>30</td>
+<td>Los Angeles</td>
+<td>1995</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>Charlie</td>
+<td>35</td>
+<td>Chicago</td>
+<td>1990</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>David</td>
+<td>40</td>
+<td>Houston</td>
+<td>1985</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>Eve</td>
+<td>45</td>
+<td>Phoenix</td>
+<td>1980</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="student-performance-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="student-performance-dataset">Student Performance Dataset <a class="anchor" id="dataset" href=""></a></h2>
+<p>The dataset used is the student performance dataset as discussed in the lecture this week. More information on the dataset can be found here: https://archive.ics.uci.edu/dataset/320/student+performance</p>
+<p>We are going to focus on the students maths results rather than their portuguese results.</p>
+<p>First read in the data from the CSV file into a pandas dataframe using pd.read_csv (the datset is called student-mat.csv):</p>
+<p>(Hint: you will want to set <code>"sep=';'</code>, as this is the seperator used in the data)</p>
+<div id="2514f93c-01e8-4c96-8827-fa276d5f5f51" class="cell" data-execution_count="67">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>perf <span class="op">=</span> pd.read_csv(<span class="st">"../student-mat.csv"</span>, sep <span class="op">=</span> <span class="st">";"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we print the shape of our data to see its dimensions.</p>
+<div id="c69652c2-2844-490d-8d3f-df4119f736f7" class="cell" data-execution_count="76">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(perf.shape) <span class="co"># shape = dim in R</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>perf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(395, 33)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">school</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">address</th>
+<th data-quarto-table-cell-role="th">famsize</th>
+<th data-quarto-table-cell-role="th">Pstatus</th>
+<th data-quarto-table-cell-role="th">Medu</th>
+<th data-quarto-table-cell-role="th">Fedu</th>
+<th data-quarto-table-cell-role="th">Mjob</th>
+<th data-quarto-table-cell-role="th">Fjob</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">famrel</th>
+<th data-quarto-table-cell-role="th">freetime</th>
+<th data-quarto-table-cell-role="th">goout</th>
+<th data-quarto-table-cell-role="th">Dalc</th>
+<th data-quarto-table-cell-role="th">Walc</th>
+<th data-quarto-table-cell-role="th">health</th>
+<th data-quarto-table-cell-role="th">absences</th>
+<th data-quarto-table-cell-role="th">G1</th>
+<th data-quarto-table-cell-role="th">G2</th>
+<th data-quarto-table-cell-role="th">G3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>GP</td>
+<td>F</td>
+<td>18</td>
+<td>U</td>
+<td>GT3</td>
+<td>A</td>
+<td>4</td>
+<td>4</td>
+<td>at_home</td>
+<td>teacher</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>6</td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>GP</td>
+<td>F</td>
+<td>17</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>1</td>
+<td>1</td>
+<td>at_home</td>
+<td>other</td>
+<td>...</td>
+<td>5</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>GP</td>
+<td>F</td>
+<td>15</td>
+<td>U</td>
+<td>LE3</td>
+<td>T</td>
+<td>1</td>
+<td>1</td>
+<td>at_home</td>
+<td>other</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>10</td>
+<td>7</td>
+<td>8</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>GP</td>
+<td>F</td>
+<td>15</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>4</td>
+<td>2</td>
+<td>health</td>
+<td>services</td>
+<td>...</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>2</td>
+<td>15</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>GP</td>
+<td>F</td>
+<td>16</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>3</td>
+<td>3</td>
+<td>other</td>
+<td>other</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>5</td>
+<td>4</td>
+<td>6</td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">390</td>
+<td>MS</td>
+<td>M</td>
+<td>20</td>
+<td>U</td>
+<td>LE3</td>
+<td>A</td>
+<td>2</td>
+<td>2</td>
+<td>services</td>
+<td>services</td>
+<td>...</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>11</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">391</td>
+<td>MS</td>
+<td>M</td>
+<td>17</td>
+<td>U</td>
+<td>LE3</td>
+<td>T</td>
+<td>3</td>
+<td>1</td>
+<td>services</td>
+<td>services</td>
+<td>...</td>
+<td>2</td>
+<td>4</td>
+<td>5</td>
+<td>3</td>
+<td>4</td>
+<td>2</td>
+<td>3</td>
+<td>14</td>
+<td>16</td>
+<td>16</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">392</td>
+<td>MS</td>
+<td>M</td>
+<td>21</td>
+<td>R</td>
+<td>GT3</td>
+<td>T</td>
+<td>1</td>
+<td>1</td>
+<td>other</td>
+<td>other</td>
+<td>...</td>
+<td>5</td>
+<td>5</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>10</td>
+<td>8</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">393</td>
+<td>MS</td>
+<td>M</td>
+<td>18</td>
+<td>R</td>
+<td>LE3</td>
+<td>T</td>
+<td>3</td>
+<td>2</td>
+<td>services</td>
+<td>other</td>
+<td>...</td>
+<td>4</td>
+<td>4</td>
+<td>1</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>0</td>
+<td>11</td>
+<td>12</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">394</td>
+<td>MS</td>
+<td>M</td>
+<td>19</td>
+<td>U</td>
+<td>LE3</td>
+<td>T</td>
+<td>1</td>
+<td>1</td>
+<td>other</td>
+<td>at_home</td>
+<td>...</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>5</td>
+<td>5</td>
+<td>8</td>
+<td>9</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+
+<p>395 rows × 33 columns</p>
+</div>
+</div>
+</div>
+</div>
+<p>The data has should have 395 samples and 34 features.</p>
+<p>Another useful function in pandas for seeing some overview information about datasets is .head(). This prints the first 5 rows of our data. Try it with our data:</p>
+<div id="c782aad4-d9c5-440e-9880-d756c900b9aa" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>perf.head(<span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">school</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">address</th>
+<th data-quarto-table-cell-role="th">famsize</th>
+<th data-quarto-table-cell-role="th">Pstatus</th>
+<th data-quarto-table-cell-role="th">Medu</th>
+<th data-quarto-table-cell-role="th">Fedu</th>
+<th data-quarto-table-cell-role="th">Mjob</th>
+<th data-quarto-table-cell-role="th">Fjob</th>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">famrel</th>
+<th data-quarto-table-cell-role="th">freetime</th>
+<th data-quarto-table-cell-role="th">goout</th>
+<th data-quarto-table-cell-role="th">Dalc</th>
+<th data-quarto-table-cell-role="th">Walc</th>
+<th data-quarto-table-cell-role="th">health</th>
+<th data-quarto-table-cell-role="th">absences</th>
+<th data-quarto-table-cell-role="th">G1</th>
+<th data-quarto-table-cell-role="th">G2</th>
+<th data-quarto-table-cell-role="th">G3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>GP</td>
+<td>F</td>
+<td>18</td>
+<td>U</td>
+<td>GT3</td>
+<td>A</td>
+<td>4</td>
+<td>4</td>
+<td>at_home</td>
+<td>teacher</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>6</td>
+<td>5</td>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>GP</td>
+<td>F</td>
+<td>17</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>1</td>
+<td>1</td>
+<td>at_home</td>
+<td>other</td>
+<td>...</td>
+<td>5</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>GP</td>
+<td>F</td>
+<td>15</td>
+<td>U</td>
+<td>LE3</td>
+<td>T</td>
+<td>1</td>
+<td>1</td>
+<td>at_home</td>
+<td>other</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>10</td>
+<td>7</td>
+<td>8</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>GP</td>
+<td>F</td>
+<td>15</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>4</td>
+<td>2</td>
+<td>health</td>
+<td>services</td>
+<td>...</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>5</td>
+<td>2</td>
+<td>15</td>
+<td>14</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>GP</td>
+<td>F</td>
+<td>16</td>
+<td>U</td>
+<td>GT3</td>
+<td>T</td>
+<td>3</td>
+<td>3</td>
+<td>other</td>
+<td>other</td>
+<td>...</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>5</td>
+<td>4</td>
+<td>6</td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>GP</td>
+<td>M</td>
+<td>16</td>
+<td>U</td>
+<td>LE3</td>
+<td>T</td>
+<td>4</td>
+<td>3</td>
+<td>services</td>
+<td>other</td>
+<td>...</td>
+<td>5</td>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>5</td>
+<td>10</td>
+<td>15</td>
+<td>15</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>GP</td>
+<td>M</td>
+<td>16</td>
+<td>U</td>
+<td>LE3</td>
+<td>T</td>
+<td>2</td>
+<td>2</td>
+<td>other</td>
+<td>other</td>
+<td>...</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>0</td>
+<td>12</td>
+<td>12</td>
+<td>11</td>
+</tr>
+</tbody>
+</table>
+
+<p>7 rows × 33 columns</p>
+</div>
+</div>
+</div>
+</div>
+<section id="checking-for-missing-data" class="level4">
+<h4 class="anchored" data-anchor-id="checking-for-missing-data">Checking for Missing Data</h4>
+<p>We can run the following code to check for NA values.</p>
+<p>(There are some subtle differences between <code>null</code> which is the default in python, <code>nan</code> (Not a Number) from NumPy and the new <code>pd.NA</code> value specific to pandas, for our case it’s mostly plenty to treat all as missing values, the vast majority you will encounter will be <code>null</code>, so that’s what we will use.)</p>
+<div id="0536922f-e411-494d-9dae-6afaea3be735" class="cell" data-execution_count="81">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>feat_miss <span class="op">=</span> perf.columns[perf.isnull().<span class="bu">any</span>()]</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(feat_miss)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>feat_miss.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Index([], dtype='object')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>(0,)</code></pre>
+</div>
+</div>
+<p>Luckily in this case we don’t have any missing data. We will look at missingness and imputation in future labs however, as most Machine Learning algorithms are not able to natively handle missing values, and many datasets contain them.</p>
+</section>
+<section id="summary-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="summary-statistics">Summary Statistics:</h3>
+<p>We want to see some of the headline information about our data before we analyse it. For this we can use the .describe() function we learned above.</p>
+<div id="2a500341-5a70-4d2d-a831-5e6927759664" class="cell" data-execution_count="105">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># perf.describe(include=[str.__contains__["edu"]]) # dont work</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>perf.loc[:, perf.columns.<span class="bu">str</span>.contains(<span class="st">"edu"</span>)].describe()</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># why is this weird shit complicated</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>perf[[<span class="st">'Medu'</span>, <span class="st">'Fedu'</span>]].describe()</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>perf.<span class="bu">filter</span>(regex<span class="op">=</span><span class="st">"edu"</span>, axis<span class="op">=</span><span class="dv">1</span>).describe() <span class="co"># this is cool and easy</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Medu</th>
+<th data-quarto-table-cell-role="th">Fedu</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>395.000000</td>
+<td>395.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>2.749367</td>
+<td>2.521519</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>1.094735</td>
+<td>1.088201</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>0.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>2.000000</td>
+<td>2.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>3.000000</td>
+<td>2.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>4.000000</td>
+<td>3.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>4.000000</td>
+<td>4.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<p>This gives us the following info:</p>
+<p>count: The number of non-missing (non-NaN) values.</p>
+<p>mean: The mean of the values.</p>
+<p>std: The standard deviation of the values.</p>
+<p>min: The minimum value.</p>
+<p>25%: The 25th percentile (first quartile).</p>
+<p>50% (median): The median of the data.</p>
+<p>75%: The 75th percentile (third quartile).</p>
+<p>max: The maximum value.</p>
+<p>We can also specify percentiles other than the default values of 25, 50, 75:</p>
+<div id="972ad2bb-1187-453c-8f2d-e3fdc3925203" class="cell" data-execution_count="108">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>custom_percentiles <span class="op">=</span> perf.describe(percentiles<span class="op">=</span>[<span class="fl">.20</span>, <span class="fl">.40</span>, <span class="fl">.60</span>, <span class="fl">.80</span>])</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(custom_percentiles)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              age        Medu        Fedu  traveltime   studytime    failures      famrel    freetime       goout        Dalc        Walc  \
+count  395.000000  395.000000  395.000000  395.000000  395.000000  395.000000  395.000000  395.000000  395.000000  395.000000  395.000000   
+mean    16.696203    2.749367    2.521519    1.448101    2.035443    0.334177    3.944304    3.235443    3.108861    1.481013    2.291139   
+std      1.276043    1.094735    1.088201    0.697505    0.839240    0.743651    0.896659    0.998862    1.113278    0.890741    1.287897   
+min     15.000000    0.000000    0.000000    1.000000    1.000000    0.000000    1.000000    1.000000    1.000000    1.000000    1.000000   
+20%     15.000000    2.000000    1.000000    1.000000    1.000000    0.000000    3.000000    2.000000    2.000000    1.000000    1.000000   
+40%     16.000000    2.000000    2.000000    1.000000    2.000000    0.000000    4.000000    3.000000    3.000000    1.000000    2.000000   
+50%     17.000000    3.000000    2.000000    1.000000    2.000000    0.000000    4.000000    3.000000    3.000000    1.000000    2.000000   
+60%     17.000000    3.000000    3.000000    1.000000    2.000000    0.000000    4.000000    3.000000    3.000000    1.000000    3.000000   
+80%     18.000000    4.000000    4.000000    2.000000    3.000000    1.000000    5.000000    4.000000    4.000000    2.000000    3.200000   
+max     22.000000    4.000000    4.000000    4.000000    4.000000    3.000000    5.000000    5.000000    5.000000    5.000000    5.000000   
+
+           health    absences          G1          G2          G3  
+count  395.000000  395.000000  395.000000  395.000000  395.000000  
+mean     3.554430    5.708861   10.908861   10.713924   10.415190  
+std      1.390303    8.003096    3.319195    3.761505    4.581443  
+min      1.000000    0.000000    3.000000    0.000000    0.000000  
+20%      2.000000    0.000000    8.000000    8.000000    8.000000  
+40%      3.000000    2.000000   10.000000   10.000000   10.000000  
+50%      4.000000    4.000000   11.000000   11.000000   11.000000  
+60%      4.000000    4.000000   12.000000   12.000000   12.000000  
+80%      5.000000   10.000000   14.000000   14.000000   14.000000  
+max      5.000000   75.000000   19.000000   19.000000   20.000000  </code></pre>
+</div>
+</div>
+<p>Let’s plot the distribution of the final grade G3</p>
+<div id="a6618374-921d-453f-896e-1bf4bfadeaa9" class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>perf[<span class="st">'G3'</span>].hist(bins<span class="op">=</span><span class="dv">20</span>, color <span class="op">=</span> <span class="st">"orange"</span>, alpha <span class="op">=</span> <span class="fl">0.5</span>, edgecolor <span class="op">=</span> <span class="st">'black'</span>, figsize <span class="op">=</span> (<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Test Scores Histogram (G3)"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Frequency"</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">False</span>)  <span class="co"># Remove grid if not needed</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">"fast"</span>) <span class="co"># does not override manual settings</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab2_files/figure-html/cell-18-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The plot above just used a simple line of code, but using matplotlib we can make much more impressive graphs. Below is an example of using matplotlip to create a scatter plot of G1 vs G3.</p>
+<div id="cell-51" class="cell" data-execution_count="129">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(perf[<span class="st">'G1'</span>], perf[<span class="st">'G3'</span>])</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'G1'</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'G3'</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab2_files/figure-html/cell-19-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Use matplotlib to make some more plots of the data to try discover some interesting patterns. See if you can get creative with multiple variables, colours etc.</p>
+<p>Here is a cheatsheet for matplotlib: https://matplotlib.org/cheatsheets/cheatsheets.pdf</p>
+</section>
+<section id="splitting-the-data-into-training-and-test-sets" class="level3">
+<h3 class="anchored" data-anchor-id="splitting-the-data-into-training-and-test-sets">Splitting the data into training and test sets</h3>
+<p>First we want to split our data into seperate dataframes for X and Y. This is common practice as many of the machine learning algorithms we use as well as regularisation and imputation functions will expect the data split up. It is very important to keep track of both and ensure they still match after any preprocessing. If your X values no longer align with your Y targets you will get very wrong results!</p>
+<p>For this case we want to do a very simple regression so we use the final year grade as our target variable, and first period grade as our only explanatory variable to start.</p>
+<div id="cell-56" class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> perf[<span class="st">'G1'</span>].values</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> perf[<span class="st">'G3'</span>].values</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#As we have a single feature, we need to reshape it to a 2D array or some of our functions will give errors.</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>X<span class="op">=</span> X.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> y.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <strong>from sklearn.model_selection import train_test_split</strong> command imports the train_test_split function from scikit-learn specifically, which is used to split the dataset into training and test sets.</p>
+<div id="8cb40371-c983-495f-a59d-15bed2faee6a" class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Setting the Random Seed: <strong>seed = 0</strong> sets the seed for the random number generator to 0. This ensures that the results are reproducible; anyone running this code with the same dataset and seed will get the same split of data. Generally this should be set at the start of your notebook.</p>
+<p>Splitting the Dataset: The code below splits the features (X) and the target variable (y) into training and test sets. 20% (test_size = 0.2) of the data is allocated to the test set, while the remaining 80% is used for training the model. The random_state = seed parameter ensures that the split is reproducible.</p>
+<div id="3ffed90c-235d-4db9-98b1-a55fba6f8d75" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>seed <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size <span class="op">=</span> <span class="fl">0.2</span>, random_state <span class="op">=</span> seed)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y.shape)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_train.shape)</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_train.shape)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_test.shape)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_test.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="standardization" class="level3">
+<h3 class="anchored" data-anchor-id="standardization">Standardization:</h3>
+<p>Standardization refers to the process of transforming each feature in your data so that it has a mean of 0 and a standard deviation of 1. This is done by subtracting the mean of each feature and then dividing by the standard deviation for each feature. The formula used is:</p>
+<p>z=(x-μ)/σ Here, x is the original feature value μ is the mean of the feature, and σ is the standard deviation of the feature.</p>
+<p>This is very useful for machine learning because it can speed up convergence, enhance numerical stability and prevent features from dominating. The main downside is that it makes interpretation harder, but as we are only concerned with prediction that’s not an issue for us!</p>
+<p>To do this follow the following steps:</p>
+<ol type="1">
+<li><p>Importing StandardScaler:<strong>from sklearn.preprocessing import StandardScaler</strong> imports the StandardScaler class, which provides the functionality to standardize features.</p></li>
+<li><p>Creating a StandardScaler Instance: <strong>sc = StandardScaler()</strong> creates an instance of StandardScaler. This instance will then be used to compute the mean and standard deviation for each feature in the dataset, and by keeping the same instance across the testing and training sets we ensure consistancy.</p></li>
+<li><p>Fitting and Transforming the Training Data: <strong>X_train = sc.fit_transform(X_train)</strong> computes the mean and standard deviation of each feature in the training set X_train, and then standardizes the training set by applying the transformation z=(x-μ)/σ. (​The fit_transform method is a combination of fit (to compute the scaling parameters) and transform (to apply the standardization).) The standardized training data is then reassigned to X_train.</p></li>
+<li><p>Transforming the Testing Data: <strong>X_test = sc.transform(X_test)</strong> applies the same transformation to X_test using the mean and standard deviation calculated from the training set. It’s crucial to use the parameters from the training set to ensure the model evaluates on the same scale. The standardized test data is reassigned to X_test.</p></li>
+</ol>
+<div id="78e815b0-c432-49a4-8023-78be47f094a5" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="ordinary-least-squares-regression-with-the-closed-form-solution" class="level2">
+<h2 class="anchored" data-anchor-id="ordinary-least-squares-regression-with-the-closed-form-solution">Ordinary Least Squares Regression with the Closed Form Solution <a class="anchor" id="ols" href=""></a>:</h2>
+<p>Using the X_train and y_train vectors, calculate the coefficients for a simple OLS Regression by performing the matrix operations for the closed form solution we learned in class.</p>
+<p>Hint: In order for us to have an intercept in the regression (usually this is something we want), you will have to add a column of ones to X_train. You can do this with the code <code>X_train = np.hstack((np.ones_like(y_train), X_train))</code></p>
+<div id="cell-66" class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Use these coefficients to caclulate the predicted y-values.</p>
+<p>Hint: You will once again have to add a vector of ones</p>
+<div id="cell-68" class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Bonus: It’s even better to define a function to do this. Can you make one which takes X_train and y_train as inputs and gives the betas and the predictions as outputs.</p>
+<div id="de7a769a-7bdf-414d-987e-71ac631a4c8c" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="calculate-coefficients-using-statsmodels" class="level3">
+<h3 class="anchored" data-anchor-id="calculate-coefficients-using-statsmodels">Calculate Coefficients using Statsmodels</h3>
+<p>Now we will use statsmodels inbuilt functionalities to calculate fit the model and calculate the predictions. I have included the code here, run it and make sure you understand it as many of the different models we will fit in this course will use similar syntax.</p>
+<div id="248e3416-96da-4a16-8750-f8c15fbb8eb0" class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can also add intercept terms using statsmodels.</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>X_train_sm <span class="op">=</span> sm.add_constant(X_train)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>X_test_sm <span class="op">=</span> sm.add_constant(X_test)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define and fit the model</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> sm.OLS(y_train, X_train_sm).fit()</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Predictions using statsmodels</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>predictions_statsmodels <span class="op">=</span> model.predict(X_test_sm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="8f630f65-a423-4838-94ef-081ca05abdd0" class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Coefficients from closed-form solution:"</span>, beta)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Coefficients from statsmodels:"</span>, model.params)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If everything went well they should be the same.</p>
+<section id="calculate-mse-for-the-models" class="level4">
+<h4 class="anchored" data-anchor-id="calculate-mse-for-the-models">Calculate MSE for the Models:</h4>
+<p>Now let’s calculate the MSE for the models using the mean_squared_error function from sklearn.metrics. It takes the form: <code>mean_squared_error(y_test, predictions_from_model)</code></p>
+<div id="fe2da20a-b4ad-44e9-ad4e-42f6068bea42" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="higher-dimensions" class="level3">
+<h3 class="anchored" data-anchor-id="higher-dimensions">Higher Dimensions</h3>
+<p>We will now create polynomials of X_train and X_test to fit a polynomial regression model. We will use the PolynomialFeatures class from scikit-learn to create the polynomial features. See if you can figure out how to use this function to add the polynomial expansion of our explanatory variable even better if you can make a fucntion to do this.</p>
+<div id="cell-82" class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can try create a plot of the mse values for each polynomial degree from 1 to 15.</p>
+<p>Lets plot the polynomial regression model with degree 5, and compare it with the linear regression model.</p>
+<p>Based on the above graphs what do you think the best function for the relationship is? Are our polynomial terms adding value?</p>
+<p>Bonus: If you have time, try add some of the numerical variables we left out of X back in and see if you can make a better function.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
